@@ -1,0 +1,27 @@
+# Serena agent execution context configuration
+# This defines the execution context for agent workflows
+
+context:
+  name: "code-intel"
+  description: "Code intelligence execution context for the code-intel dsh plugin"
+  tools:
+    - find_symbol
+    - find_referencing_symbols
+    - find_implementations
+    - get_symbols_overview
+    - list_dir
+    - read_file
+    - create_text_file
+    - replace_content
+    - rename_symbol
+    - move_symbol
+    - safe_delete_symbol
+    - inline_symbol
+    - write_memory
+    - read_memory
+    - list_memories
+    - delete_memory
+    - rename_memory
+    - edit_memory
+    - get_diagnostics
+  enabled: true
