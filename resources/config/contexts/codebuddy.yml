@@ -1,6 +1,0 @@
-# CodeBuddy context configuration (reference)
-context:
-  name: "codebuddy"
-  description: "CodeBuddy execution context"
-  tools: []
-  enabled: true

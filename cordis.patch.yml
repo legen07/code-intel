@@ -1,38 +1,7 @@
-# Code-Intel plugin patch for DeepSeek Harness
-# This plugin provides IDE-like code intelligence capabilities
+# Code-Intel plugin patch for DeepSeek Harness.
+# Inserts the Host plugin into the profile tree; its Web Client half is loaded
+# from the package's `./client` export by the browser module loader.
 
-- id: code-intel-plugin
-  name: "@deepseek-ai/code-intel"
-  config:
-    plugin:
-      title: "Code-Intel: Code Intelligence Plugin"
-      description: "IDE-like code intelligence for coding agents: symbol search, file operations, refactoring, memory management, and diagnostics"
-      version: "0.1.0"
-      capabilities:
-        - symbol_search
-        - file_operations
-        - symbolic_editing
-        - memory_management
-        - diagnostics
-      operations:
-        - find_symbol
-        - find_referencing_symbols
-        - find_implementations
-        - get_symbols_overview
-        - list_dir
-        - read_file
-        - create_text_file
-        - replace_content
-        - rename_symbol
-        - move_symbol
-        - safe_delete_symbol
-        - inline_symbol
-        - write_memory
-        - read_memory
-        - list_memories
-        - delete_memory
-        - rename_memory
-        - edit_memory
-        - get_diagnostics
-      platforms: [web]
-      defaultContext: "code-intel"
+- insert:
+    - id: code-intel
+      name: '@deepseek-ai/code-intel'
