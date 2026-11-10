@@ -19,11 +19,20 @@ export const TAB_ID = '@deepseek-ai/code-intel'
 /** Kind discriminator of the symbol-browser tab. */
 export const TAB_KIND = 'code-intel-symbols'
 
+/**
+ * Browser services the entry needs before it applies.
+ *
+ * The Loader keeps the entry fiber pending until every listed service is
+ * provided, so `apply` may read `ctx.remote`, `ctx.locale`, `ctx.slots`, and
+ * `ctx.sidebarRightTabs` directly — the contract every shipped Client panel
+ * plugin relies on. The one service that cannot land here is
+ * `remote.codeIntel`: that namespace is created by this plugin's own remote
+ * mount, so the UI waits for it inside the transport plugin instead.
+ */
+export const inject = ['remote', 'locale', 'slots', 'sidebarRightTabs']
+
 /** Locale namespace for the panel's copy. */
 const NS = 'codeIntel'
-
-/** Browser services the UI registration waits for. */
-const UI_INJECT = ['remote.codeIntel', 'locale', 'slots', 'sidebarRightTabs']
 
 const ENGLISH = {
   'tab.title': 'Code-Intel',
@@ -61,23 +70,25 @@ interface ClientContext {
 
 /**
  * Mount the code-intel remote, then the symbol-browser UI that calls it.
+ *
+ * The remote mount runs inside its own plugin because the `remote.codeIntel`
+ * service it installs is what the UI registration waits for; the transport's
+ * disposers withdraw both when the entry unloads.
  * @param ctx - browser plugin context.
- * @returns the disposer that withdraws the UI, then the remote.
+ * @returns the disposer that withdraws the transport.
  */
 export async function apply(ctx: Context): Promise<() => Promise<void>> {
-  const client = ctx as unknown as ClientContext
-  const unmountRemote = await client.remote.$mount(CODE_INTEL_REMOTE)
-  const ui = client.inject(UI_INJECT, registerUi)
-  try {
-    await ui
-  } catch (error) {
-    await ui.dispose()
-    await unmountRemote()
-    throw error
-  }
+  const transport = ctx.plugin(async (owner: Context) => {
+    const client = owner as unknown as ClientContext
+    const unmountRemote = await client.remote.$mount(CODE_INTEL_REMOTE)
+    client.inject(['remote.codeIntel', 'locale', 'slots', 'sidebarRightTabs'], registerUi)
+    return async () => {
+      await unmountRemote()
+    }
+  })
+  await transport
   return async () => {
-    await ui.dispose()
-    await unmountRemote()
+    await transport.dispose()
   }
 }
 
