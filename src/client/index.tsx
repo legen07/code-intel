@@ -14,7 +14,7 @@ import { CODE_INTEL_REMOTE, codeIntelApi, type CodeIntelApi } from './remote.ts'
 import { SymbolBrowser } from './panel.tsx'
 
 /** Registry id of the symbol-browser tab type, also its slot key. */
-export const TAB_ID = '@deepseek-ai/code-intel'
+export const TAB_ID = 'code-intel'
 
 /** Kind discriminator of the symbol-browser tab. */
 export const TAB_KIND = 'code-intel-symbols'

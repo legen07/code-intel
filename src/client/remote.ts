@@ -19,7 +19,7 @@ const stringCodec = (description: string) => ({
 
 export const CODE_INTEL_REMOTE = createTypertRemoteInfo(
   {
-    package: '@deepseek-ai/code-intel',
+    package: 'code-intel',
     methods: {
       'codeIntel/query': {
         service: 'codeIntel',

@@ -4,4 +4,4 @@
 
 - insert:
     - id: code-intel
-      name: '@deepseek-ai/code-intel'
+      name: 'code-intel'

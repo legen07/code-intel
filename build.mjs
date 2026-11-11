@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 const root = here
 const lib = resolve(root, 'lib')
-const CLIENT_PACKAGE = '@deepseek-ai/code-intel'
+const CLIENT_PACKAGE = 'code-intel'
 
 /** External modules resolved by the DSH Host plugin loader. */
 const HOST_EXTERNALS = [

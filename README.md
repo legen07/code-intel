@@ -1,6 +1,8 @@
-# @deepseek-ai/code-intel
+# code-intel
 
 DeepSeek Harness plugin that gives coding agents IDE-grade code intelligence about the project they are working in — a Serena-style, language-server-backed symbol layer for TypeScript and JavaScript projects.
+
+> Community plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). Not affiliated with DeepSeek.
 
 Code-intel discovers every symbol of every script in the project, derives each symbol's properties, persists the results as a **project blueprint** (a symbol + module-dependency graph), and exposes it all to the agent as a fixed set of callable tools — plus a symbol-browser panel in the Web Client's right sidebar.
 
@@ -70,9 +72,13 @@ Tests drive the real `typescript-language-server` against `test/fixture` (a smal
 
 > TypeScript must stay on `~5.9` while `typescript-language-server` expects a classic `lib/tsserver.js`; TypeScript 7 ships the native compiler without it.
 
-### Enabling in DeepSeek Harness
+## Install
 
-Install the package into a profile that can resolve it, then enable the plugin — `cordis.patch.yml` inserts `code-intel` into the plugin tree and the browser module loader picks up `lib/client.js` through the package's `./client` export. The plugin targets DSH `>=0.2.1-rc.5` with `@deepseek-ai/cordis ~4.1`.
+```sh
+dsh plugin --profile web add code-intel
+```
+
+`cordis.patch.yml` inserts `code-intel` into the plugin tree, and the browser module loader picks up `lib/client.js` through the package's `./client` export. Requires DSH `>=0.2.2-rc.1` on the `web` profile with `@deepseek-ai/cordis ~4.1`.
 
 ## Design notes
 

@@ -48,8 +48,8 @@ function loadClientBundle(): Record<string, unknown> {  const require = createRe
     ;(globalThis as { window?: unknown }).window = savedWindow
     ;(globalThis as { __ModuleLoader__?: unknown }).__ModuleLoader__ = savedLoader
   }
-  const entry = modules.get('@deepseek-ai/code-intel')
-  assert.ok(entry !== undefined, 'the bundle registers @deepseek-ai/code-intel with the module loader')
+  const entry = modules.get('code-intel')
+  assert.ok(entry !== undefined, 'the bundle registers code-intel with the module loader')
   return entry as Record<string, unknown>
 }
 
