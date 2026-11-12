@@ -73,6 +73,10 @@ Tests drive the real `typescript-language-server` against `test/fixture` (a smal
 
 > TypeScript must stay on `~5.9` while `typescript-language-server` expects a classic `lib/tsserver.js`; TypeScript 7 ships the native compiler without it.
 
+## Versioning
+
+This project follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html). It is in initial development (`0.x`): per SemVer §4 anything may change at any time and the public API should not be considered stable. Until `1.0.0`, backwards-compatible bug fixes bump the patch number (`0.y.z`), while new features or breaking changes bump the minor number (`0.y`). All notable changes are recorded in [CHANGELOG.md](CHANGELOG.md) in the [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) format.
+
 ## Install
 
 ```sh
