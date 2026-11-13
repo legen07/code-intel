@@ -1,0 +1,55 @@
+# Release workflow — runs when an annotated vX.Y.Z tag is pushed. Verifies the
+# release on a clean checkout and publishes a GitHub Release with generated
+# notes. The package itself is published per the distribution contract in
+# REGISTRY_READINESS.md (manual step; publishing secrets stay local).
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Verify and release ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # generated notes need the full history
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies (frozen lockfile)
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run check
+
+      - name: Build
+        run: bun run build
+
+      - name: Test
+        run: bun run test
+
+      - name: Assert package contents
+        run: node tools/assert-package-files.mjs
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "${{ github.ref_name }}" --verify-tag --generate-notes --title "${{ github.ref_name }}"

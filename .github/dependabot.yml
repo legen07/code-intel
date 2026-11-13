@@ -1,0 +1,35 @@
+# Dependabot — keeps dependencies and GitHub Actions current.
+version: 2
+updates:
+  # Package dependencies (typescript, typescript-language-server, zod, types).
+  # Peers (@deepseek-ai/*) are pinned by the live DSH profile; keep updates
+  # deliberate and re-run link-peers after bumping.
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: UTC
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    labels: ["dependencies"]
+    groups:
+      types:
+        patterns: ["@types/*"]
+
+  # CI workflow action versions.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: UTC
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+    labels: ["dependencies"]

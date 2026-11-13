@@ -1,0 +1,12 @@
+# Issue-template chooser configuration.
+# Blank issues are disabled: use the bug report or feature request templates so
+# reports carry the environment details we need. Security reports never go
+# through issues — see SECURITY.md.
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/legen07/code-intel/security/advisories/new
+    about: Report a security vulnerability privately (see SECURITY.md) — do not open a public issue.
+  - name: Documentation
+    url: https://github.com/legen07/code-intel#readme
+    about: Read the README first — tools, architecture, install, and design notes.
