@@ -1,5 +1,61 @@
+# ---------- Dependencies ----------
 node_modules/
-.tmp/
 .bun-cache/
+
+# ---------- Build artifacts ----------
+# lib/ is intentionally committed: published installs resolve to the built
+# distribution instead of an install-time build (see CHANGELOG).
+dist/
+build/
+out/
+*.tsbuildinfo
+*.tgz
+*.tar.gz
+
+# ---------- Test / coverage ----------
+coverage/
+.nyc_output/
+*.lcov
+
+# ---------- Runtime / caches ----------
+# .tmp/ holds the typescript-language-server engine downloads at test time.
+.tmp/
+.cache/
+.eslintcache
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ---------- Environment & secrets ----------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---------- Editors & IDEs ----------
+.vscode/*
+!.vscode/settings.json.example
+!.vscode/extensions.json
+.idea/
+.fleet/
+.history/
+*.swp
+*.swo
+*~
+
+# ---------- Operating systems ----------
 .DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ---------- Plugin runtime state ----------
+# Per-project graph caches live under ~/.dsh and never belong in the repo.
+.dsh/

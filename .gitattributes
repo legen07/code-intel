@@ -1,0 +1,47 @@
+# Normalize all text files to LF in the repository, regardless of checkout OS.
+# Checked-out files keep their platform default (CRLF on Windows); committed
+# bytes are always LF, which keeps diffs clean and the ESM bundles portable.
+* text=auto eol=lf
+
+# Explicitly normalize the source formats that must never carry CRLF.
+*.ts   text eol=lf
+*.tsx  text eol=lf
+*.js   text eol=lf
+*.mjs  text eol=lf
+*.cjs  text eol=lf
+*.json text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.md   text eol=lf
+*.css  text eol=lf
+*.html text eol=lf
+
+# Binary assets — never normalize or diff them.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.svg  text eol=lf
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.eot  binary
+*.pdf  binary
+*.zip  binary
+*.tgz  binary
+*.gz   binary
+
+# Generated Web Client bundle marker (lib/client.js header comment) is part of
+# a text file and stays normalized via *.js above.
+
+# Development-only paths: exclude from GitHub source archives/tarballs.
+# Consumers who install from a tag archive still get the built lib/ and the
+# manifest; CI/templates/docs stay out of the download.
+.github export-ignore
+.editorconfig export-ignore
+.gitattributes export-ignore
+test export-ignore
+tools export-ignore
+.tmp export-ignore
