@@ -1,0 +1,5 @@
+# Review requests default to the repository owner.
+# Add one line per area as the project gains maintainers, e.g.:
+# /src/host/lsp/   @your-handle
+
+* @legen07
