@@ -1,5 +1,7 @@
 # code-intel
+[![CI](https://github.com/legen07/code-intel/actions/workflows/ci.yml/badge.svg)](https://github.com/legen07/code-intel/actions/workflows/ci.yml)
 [![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/legen07/code-intel)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/legen07/code-intel/blob/main/LICENSE)
 
 DeepSeek Harness plugin that gives coding agents IDE-grade code intelligence about the project they are working in — a Serena-style, language-server-backed symbol layer for TypeScript and JavaScript projects.
 
@@ -65,7 +67,7 @@ bun install                          # install dependencies
 bun run link-peers                   # link DSH peer packages from the global install
 bun run check                        # typecheck
 bun run build                        # build lib/index.js, lib/client.js, lib/types
-bun test                             # unit + integration tests
+bun run test                         # unit + integration tests (node --test)
 node tools/smoke-host.mjs            # load the built bundle and query a live server
 ```
 
@@ -91,3 +93,15 @@ dsh plugin --profile web add code-intel
 - **Why one envelope remote.** The browser panel funnels every operation through a single validated `codeIntel/query(op, argsJson)` method, keeping the Gateway wire surface small while the client-side wrappers keep calls typed.
 - **Read-only v1.** Symbol-level mutations (rename, move, delete) are deliberately deferred; they need full workspace-edit handling and are where agents can corrupt code.
 - **Session project.** Tools resolve the calling agent's session directory through the working-directory service; `get_project_blueprint` answers for that root and caches the graph under `~/.dsh/code-intel/caches/<hash>/graph.json` (override with `DSH_CODE_INTEL_CACHE`).
+
+## Contributing
+
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the development setup, the commit-message convention (Conventional Commits), and the pull-request checklist; [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) governs conduct in this project. Before making a change, check the open [issues](https://github.com/legen07/code-intel/issues).
+
+## Security
+
+To report a security vulnerability, do **not** open a public issue — see [SECURITY.md](SECURITY.md) for the private disclosure process.
+
+## License
+
+[MIT](LICENSE) © Joe Legen

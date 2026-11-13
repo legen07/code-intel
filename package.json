@@ -32,6 +32,7 @@
     "prepack": "node tools/assert-package-files.mjs"
   },
   "license": "MIT",
+  "author": "Joe Legen (https://github.com/legen07)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/legen07/code-intel.git"
