@@ -28,7 +28,7 @@
     "link-peers": "node tools/link-peers.mjs",
     "build": "node build.mjs",
     "check": "tsc --noEmit -p tsconfig.json",
-    "test": "node --test test/",
+    "test": "node --test --test-concurrency=1 test/client-entry.test.ts test/graph.test.ts test/lsp.test.ts test/service.test.ts",
     "prepack": "node tools/assert-package-files.mjs"
   },
   "license": "MIT",

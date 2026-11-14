@@ -71,7 +71,7 @@ bun run test                         # unit + integration tests (node --test)
 node tools/smoke-host.mjs            # load the built bundle and query a live server
 ```
 
-Tests drive the real `typescript-language-server` against `test/fixture` (a small TypeScript project) and verify the protocol layer, the graph model, persistence and caching, the blueprint, and the service's typed API and remote envelope.
+Tests drive the real `typescript-language-server` against `test/fixture` (a small TypeScript project) and verify the protocol layer, the graph model, persistence and caching, the blueprint, and the service's typed API and remote envelope. The suite runs its files one at a time (`--test-concurrency=1`) so the two language-server-spawning files don't starve each other's diagnostics timeouts.
 
 > TypeScript must stay on `~5.9` while `typescript-language-server` expects a classic `lib/tsserver.js`; TypeScript 7 ships the native compiler without it.
 

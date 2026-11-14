@@ -10,7 +10,9 @@ released.
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org) `>= 20` (the test runner is `node --test`)
+- [Node.js](https://nodejs.org) `22 LTS` or newer — the test suite executes the
+  TypeScript sources directly via Node's built-in type stripping. The published
+  `lib/` artifact itself only needs Node `>= 20` (see `engines`).
 - [Bun](https://bun.sh) (the build pipeline and lockfile are Bun-based)
 - A DSH profile install of the Harness `web` profile, or any DSH global install
   the peer linker can find (see below)
@@ -45,6 +47,14 @@ Integration tests spawn the real `typescript-language-server` against
 `test/fixture` (a small TypeScript project) and may take a while the first run.
 The language server downloads its TypeScript engine into `.tmp/`, which is
 gitignored. Tests must stay read-only with respect to the fixture.
+
+The `test` script passes the suite files **explicitly** and runs them
+**serialized** (`--test-concurrency=1`): passing a directory to `node --test`
+is not handled consistently across Node versions, and `lsp.test.ts` and
+`service.test.ts` each spawn their own language server — when the two run in
+parallel they compete for CPU and can starve each other's diagnostics
+timeouts. When you add a test file, append it to the script; the file list is
+deliberate, not a glob.
 
 Keep [README.md](README.md)'s TypeScript pin in mind: TypeScript must stay on
 `~5.9` because `typescript-language-server` expects the classic `lib/tsserver.js`.

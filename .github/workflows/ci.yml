@@ -25,7 +25,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        node: [20, 22]
+        # The suite executes the TypeScript sources directly through Node's
+        # built-in type stripping, which needs Node >= 22.18. The Node 20
+        # engines floor is validated separately by the package job below.
+        node: [22, 24]
 
     steps:
       - name: Check out
@@ -60,7 +63,9 @@ jobs:
         run: node tools/assert-package-files.mjs
 
   # A lightweight verification that the committed lib/ distribution is still in
-  # the file list contract — fast feedback on packaging mistakes.
+  # the file list contract — fast feedback on packaging mistakes. Runs on the
+  # engines-minimum Node (>= 20) so the published artifact is exercised on the
+  # oldest runtime it claims to support.
   package:
     name: npm pack (dry run)
     runs-on: ubuntu-latest

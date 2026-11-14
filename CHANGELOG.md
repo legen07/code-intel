@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Repository standards: `.gitattributes` (LF normalization, binary handling, archive exclusions), `.editorconfig`, `CONTRIBUTING.md` (development setup, Conventional Commits, release process), `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md` (private vulnerability reporting), and `.github/CODEOWNERS`.
-- GitHub repository automation: CI workflow (`check`/`build`/`test`/`prepack` assertion across Node 20/22 on Ubuntu and macOS), a release workflow that verifies a tag and publishes a GitHub Release with generated notes, issue templates (bug report, feature request), a pull-request template, and Dependabot configuration for npm and GitHub Actions.
+- GitHub repository automation: CI workflow (`check`/`build`/`test`/`prepack` assertion across Node 22 and 24 on Ubuntu and macOS, with the package dry-run on the engines-minimum Node 20), a release workflow that verifies a tag and publishes a GitHub Release with generated notes, issue templates (bug report, feature request), a pull-request template, and Dependabot configuration for npm and GitHub Actions.
 - `author` metadata in `package.json`; CI, license, and registry badges in the README.
 - Annotated git tags `v0.1.0` and `v0.2.0` marking the historical releases.
 - Client-entry test suite (`test/client-entry.test.ts`) covering the Web Client entry: the module-loader factory shape, tab and right-sidebar slot registration, and the remote envelope.
@@ -28,6 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Harmonized the DSH engine and compatibility gates to `>=0.2.2-rc.1` on the `web` profile and added `dsh.catalog` metadata (category, en/zh summaries, capabilities).
 
 ### Fixed
+
+- Test command portability and stability: `node --test test/` passed a directory to the test runner, which Node 22 on macOS spawned as a module (`Cannot find module '.../test'`, no `index.js` in `test/`), and its diagnostic-dependent tests could time out when the two language-server-spawning files ran in parallel. The `test` script now lists the suite files explicitly and runs them serialized (`--test-concurrency=1`), which also makes the suite faster (65s → 46s) and gives the slowest diagnostics test ~3.5× timeout headroom.
+- CI and release workflows ran the TypeScript suite on Node 20, which cannot execute `.ts` sources: the suite job now runs on Node 22/24 (type stripping), while the `npm pack` dry-run keeps validating packaging on the engines-minimum Node 20.
 
 - Plugin installation: removed the `dsh.client.inject` module list (now `[]`), which broke installation, and dropped the vendored `serena` source link.
 
