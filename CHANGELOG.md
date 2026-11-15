@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Project icon: layered "strata" mark with a symbol-graph node, declared as the npm
+  `icon` field (`icon.svg`, shipped in the package). Plugin hubs that read the DSH
+  package manifest now show this instead of a generic or avatar fallback.
+
+### Added
+
 - Repository standards: `.gitattributes` (LF normalization, binary handling, archive exclusions), `.editorconfig`, `CONTRIBUTING.md` (development setup, Conventional Commits, release process), `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md` (private vulnerability reporting), and `.github/CODEOWNERS`.
 - GitHub repository automation: CI workflow (`check`/`build`/`test`/`prepack` assertion across Node 22 and 24 on Ubuntu and macOS, with the package dry-run on the engines-minimum Node 20), a release workflow that verifies a tag and publishes a GitHub Release with generated notes, issue templates (bug report, feature request), a pull-request template, and Dependabot configuration for npm and GitHub Actions.
 - `author` metadata in `package.json`; CI, license, and registry badges in the README.

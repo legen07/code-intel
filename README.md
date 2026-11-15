@@ -1,3 +1,5 @@
+<p align="center"><img src="icon.svg" width="128" alt="code-intel"></p>
+
 # code-intel
 [![CI](https://github.com/legen07/code-intel/actions/workflows/ci.yml/badge.svg)](https://github.com/legen07/code-intel/actions/workflows/ci.yml)
 [![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/legen07/code-intel)

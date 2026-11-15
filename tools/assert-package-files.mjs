@@ -15,6 +15,7 @@ const REQUIRED = [
   'lib/types/index.d.ts',
   'lib/types/client/index.d.ts',
   'cordis.patch.yml',
+  'icon.svg',
   'package.json',
 ]
 

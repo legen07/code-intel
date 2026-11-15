@@ -14,7 +14,8 @@ entire remaining hill.
 Implemented: renamed to `code-intel` (patch row, client factory ID, remote envelope, tab ID, tests),
 fixed `repository`/`homepage`/`bugs`, LICENSE added, `lib/` un-ignored for git installs, `dsh.catalog`
 declared, version gates harmonized to `>=0.2.2-rc.1`, README install section + disclaimer. Build, typecheck
-and all 25 tests pass after the rename.
+and all 25 tests pass after the rename. Project icon (`icon.svg`, npm `icon` field, README header) added so
+hubs and portals render the project's own mark instead of the publisher's GitHub avatar.
 
 **Remaining manual steps:** publish to npm, add the `dsh-plugin` GitHub topic (needs `gh auth login`),
 then the P2 portal submissions.
