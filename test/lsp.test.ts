@@ -133,3 +133,9 @@ test('publishDiagnostics surfaces type errors', async () => {
     await client.stop()
   }
 })
+
+test('a failed spawn rejects initialize instead of crashing the host', async () => {
+  const client = new LspClient({ rootPath: join(fixture, 'does-not-exist'), requestTimeoutMs: 5_000 })
+  await assert.rejects(() => client.start(), (error: Error) => /ENOENT|spawn/i.test(error.message), 'the spawn error reaches initialize')
+  assert.equal(client.running, false, 'the client is dead without a live child')
+})

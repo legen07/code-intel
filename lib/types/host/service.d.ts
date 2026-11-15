@@ -13,7 +13,7 @@ import type { Agent } from '@deepseek-ai/dsh-agent';
 import { LspClient } from './lsp/client.ts';
 import { GraphStore } from './graph/store.ts';
 import { SymbolGraph } from './graph/model.ts';
-import type { IndexStatus, ProjectBlueprint, SymbolDiagnostics, SymbolDetails, SymbolHit, SymbolOverviewEntry } from '../common/types.ts';
+import type { IndexStatus, LspDiagnostic, ProjectBlueprint, SymbolDiagnostics, SymbolDetails, SymbolHit, SymbolOverviewEntry } from '../common/types.ts';
 declare module '@deepseek-ai/cordis' {
     interface Context {
         /** Code intelligence: symbol graph, blueprint, and semantic queries. */
@@ -109,4 +109,6 @@ export declare class CodeIntelService extends TypertRemoteService {
     /** Collect pushed diagnostics, waiting for a fresh publication. */
     private collectDiagnostics;
 }
+/** Wait for a meaningful diagnostics publication for a document. */
+export declare function waitForDiagnostics(client: LspClient, uri: string, timeoutMs: number): Promise<LspDiagnostic[]>;
 export {};

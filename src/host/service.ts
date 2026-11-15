@@ -268,12 +268,10 @@ export class CodeIntelService extends TypertRemoteService {
     }
     if (relativePath) return [await collect(relativePath)]
     const files = context.graph ? Object.keys(context.graph.data.files) : []
-    const withDiagnostics: SymbolDiagnostics[] = []
-    for (const file of files) {
-      const entry = await collect(file)
-      if (entry.diagnostics.length > 0) withDiagnostics.push(entry)
-    }
-    return withDiagnostics
+    // Collect in parallel: each file waits on its own publication, and one
+    // slow re-check must not block every other file behind it.
+    const entries = await Promise.all(files.map((file) => collect(file)))
+    return entries.filter((entry) => entry.diagnostics.length > 0)
   }
 
   /** Force a full re-index of a project. */
@@ -425,23 +423,43 @@ function languageIdFromUri(uri: string): string | null {
   return languageIdOf(uriToPath(uri))
 }
 
-/** Wait for one publishDiagnostics notification for a document. */
-function waitForDiagnostics(client: LspClient, uri: string, timeoutMs: number): Promise<LspDiagnostic[]> {
+/**
+ * Wait for a meaningful diagnostics publication for a document.
+ *
+ * The language server can publish an empty batch before the real one: while
+ * its program is still being built the first check of a document can come
+ * back empty even when the file has type errors, and the semantic pass then
+ * supersedes it (measured gap: tens of milliseconds). Resolving on that
+ * first empty flush would report a broken file as clean, so an empty
+ * publication only closes the wait after a grace window in which nothing
+ * better arrived; any later non-empty batch settles it immediately.
+ */
+const EMPTY_PUBLICATION_GRACE_MS = 1_500
+
+/** Wait for a meaningful diagnostics publication for a document. */
+export function waitForDiagnostics(client: LspClient, uri: string, timeoutMs: number): Promise<LspDiagnostic[]> {
   return new Promise((resolve) => {
-    const timer = setTimeout(() => {
-      cleanup()
-      resolve(client.getDiagnostics(uri))
-    }, timeoutMs)
-    const listener = (event: { uri: string; diagnostics: LspDiagnostic[] }) => {
-      if (event.uri === uri) {
-        cleanup()
-        resolve(event.diagnostics)
-      }
-    }
-    const cleanup = () => {
+    let settled = false
+    let grace: ReturnType<typeof setTimeout> | undefined
+    const finish = () => {
+      if (settled) return
+      settled = true
       clearTimeout(timer)
+      if (grace !== undefined) clearTimeout(grace)
       client.off('diagnostics', listener)
+      // The client's cache holds the freshest publication; it may have been
+      // updated after the event that closed the wait.
+      resolve(client.getDiagnostics(uri))
     }
+    const listener = (event: { uri: string; diagnostics: LspDiagnostic[] }) => {
+      if (settled || event.uri !== uri) return
+      if (event.diagnostics.length > 0) {
+        finish()
+        return
+      }
+      if (grace === undefined) grace = setTimeout(finish, EMPTY_PUBLICATION_GRACE_MS)
+    }
+    const timer = setTimeout(finish, timeoutMs)
     client.on('diagnostics', listener)
   })
 }

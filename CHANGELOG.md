@@ -13,6 +13,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `icon` field (`icon.svg`, shipped in the package). Plugin hubs that read the DSH
   package manifest now show this instead of a generic or avatar fallback.
 
+### Fixed
+
+- `getDiagnostics` no longer reports a file with type errors as clean. The language
+  server can publish an empty diagnostics batch before the semantic pass (measured
+  gap: ~64 ms); the wait now holds through an empty publication for a grace window
+  and settles on the first non-empty batch, falling back to the overall deadline.
+- A failed language-server spawn rejects `initialize` cleanly instead of crashing the
+  host with an unhandled child `'error'` event (e.g. an unreadable working directory).
+- Project-wide `getDiagnostics` collects each file's diagnostics in parallel instead
+  of sequentially, so one slow re-check no longer delays every other file.
+
 ### Added
 
 - Repository standards: `.gitattributes` (LF normalization, binary handling, archive exclusions), `.editorconfig`, `CONTRIBUTING.md` (development setup, Conventional Commits, release process), `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md` (private vulnerability reporting), and `.github/CODEOWNERS`.

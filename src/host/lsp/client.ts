@@ -128,6 +128,19 @@ export class LspClient extends EventEmitter {
       this.process = null
       if (!this.shutdownRequested) this.emit('exit', code, signal)
     })
+    child.on('error', (error) => {
+      // A failed spawn (missing executable, unreadable cwd) emits 'error'
+      // with no 'exit' to follow; without this handler it would crash the
+      // host as an unhandled event instead of failing the pending requests.
+      const failure = this.initializeError ?? error
+      for (const pending of this.pending.values()) {
+        clearTimeout(pending.timer)
+        pending.reject(failure)
+      }
+      this.pending.clear()
+      this.process = null
+      if (!this.shutdownRequested) this.emit('exit', undefined, undefined)
+    })
 
     const result = (await this.request('initialize', {
       processId: process.pid,
